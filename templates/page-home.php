@@ -12,15 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-/**
- * Helper: render a tool card.
- *
- * @param WP_Post $page Page object.
- * @param string  $icon Icon label.
- * @param int     $words Excerpt length.
- * @return void
- */
-function tth_home_render_tool_card( $page, $icon = 'TOOL', $words = 18 ) {
+function tth_home_render_card_by_slug( $slug, $icon = 'TOOL', $words = 18 ) {
+	$page = get_page_by_path( $slug );
+
 	if ( ! $page instanceof WP_Post ) {
 		return;
 	}
@@ -28,52 +22,14 @@ function tth_home_render_tool_card( $page, $icon = 'TOOL', $words = 18 ) {
 	set_query_var( 'tth_tool_title', $page->post_title );
 	set_query_var(
 		'tth_tool_description',
-		function_exists( 'tth_get_tool_excerpt' ) ? tth_get_tool_excerpt( $page, $words ) : wp_trim_words( $page->post_content, $words )
+		function_exists( 'tth_get_tool_excerpt' ) ? tth_get_tool_excerpt( $page, $words ) : wp_trim_words( wp_strip_all_tags( $page->post_content ), $words )
 	);
-	set_query_var(
-		'tth_tool_url',
-		function_exists( 'tth_get_tool_link' ) ? tth_get_tool_link( $page->ID ) : get_permalink( $page->ID )
-	);
+	set_query_var( 'tth_tool_url', get_permalink( $page->ID ) );
 	set_query_var( 'tth_tool_icon', $icon );
 
 	get_template_part( 'template-parts/tool-card' );
 }
 
-/**
- * Featured calculator pages.
- */
-$featured_calculators = get_pages(
-	array(
-		'number'      => 6,
-		'post_status' => 'publish',
-		'sort_column' => 'menu_order,post_title',
-		'meta_key'    => '_wp_page_template',
-		'meta_value'  => 'templates/page-calculator.php',
-	)
-);
-
-/**
- * Featured tool pages.
- * Excludes calculator template pages.
- */
-$featured_tools = get_pages(
-	array(
-		'number'      => 6,
-		'post_status' => 'publish',
-		'sort_column' => 'menu_order,post_title',
-		'meta_query'  => array(
-			array(
-				'key'     => '_wp_page_template',
-				'value'   => 'templates/page-calculator.php',
-				'compare' => '!=',
-			),
-		),
-	)
-);
-
-/**
- * Latest blog posts.
- */
 $latest_posts = get_posts(
 	array(
 		'post_type'           => 'post',
@@ -88,133 +44,150 @@ $latest_posts = get_posts(
 
 	<section class="tth-hero">
 		<div class="inside-article">
-			<p class="tth-eyebrow"><?php esc_html_e( 'Free online utilities', 'tech-tools-hub' ); ?></p>
-			<h1><?php echo esc_html( get_the_title() ); ?></h1>
+			<p class="tth-eyebrow">Free online utilities</p>
+			<h1>Free Tech Tools & Calculators</h1>
 			<p class="tth-hero__intro">
-				<?php esc_html_e( 'Simple tech tools, calculators, and practical utilities built to help you work faster.', 'tech-tools-hub' ); ?>
+				Use simple online tools for SEO, development, images, text, and productivity. No signup required.
 			</p>
 
 			<div class="tth-hero__actions">
-				<a class="button" href="<?php echo esc_url( home_url( '/tools/' ) ); ?>">
-					<?php esc_html_e( 'Browse Tools', 'tech-tools-hub' ); ?>
-				</a>
-				<a class="button button-outline" href="<?php echo esc_url( home_url( '/calculators/' ) ); ?>">
-					<?php esc_html_e( 'View Calculators', 'tech-tools-hub' ); ?>
-				</a>
+				<a class="button" href="<?php echo esc_url( home_url( '/tools/' ) ); ?>">Browse Tools</a>
+				<a class="button button-outline" href="<?php echo esc_url( home_url( '/tools/dev-tools/' ) ); ?>">Developer Tools</a>
 			</div>
 		</div>
 	</section>
 
 	<section class="tth-section tth-section-categories">
 		<div class="inside-article">
-			<h2><?php esc_html_e( 'Browse by Category', 'tech-tools-hub' ); ?></h2>
+			<h2>Browse by Category</h2>
 
 			<div class="tth-tool-grid">
-				<article class="tth-tool-card">
-					<a class="tth-tool-card__link" href="<?php echo esc_url( home_url( '/calculators/' ) ); ?>">
-						<span class="tth-tool-card__icon">CALC</span>
-						<h3 class="tth-tool-card__title"><?php esc_html_e( 'Calculators', 'tech-tools-hub' ); ?></h3>
-						<p class="tth-tool-card__description"><?php esc_html_e( 'Fast, free calculators for web, business, finance, and more.', 'tech-tools-hub' ); ?></p>
-					</a>
-				</article>
+				<?php
+				$categories = array(
+					array( 'SEO', 'SEO Tools', 'Preview snippets, generate meta tags, and create robots.txt files.', '/tools/seo-tools/' ),
+					array( 'DEV', 'Dev Tools', 'Format JSON, minify code, encode Base64, and generate passwords.', '/tools/dev-tools/' ),
+					array( 'IMG', 'Image Tools', 'Check dimensions, calculate aspect ratios, and test color contrast.', '/tools/image-tools/' ),
+					array( 'TEXT', 'Text Tools', 'Count words, convert case, and calculate reading time.', '/tools/text-tools/' ),
+					array( 'TIME', 'Productivity Tools', 'Stay focused with simple productivity utilities.', '/tools/productivity-tools/' ),
+				);
 
-				<article class="tth-tool-card">
-					<a class="tth-tool-card__link" href="<?php echo esc_url( home_url( '/developer-tools/' ) ); ?>">
-						<span class="tth-tool-card__icon">DEV</span>
-						<h3 class="tth-tool-card__title"><?php esc_html_e( 'Developer Tools', 'tech-tools-hub' ); ?></h3>
-						<p class="tth-tool-card__description"><?php esc_html_e( 'Simple utilities for coding, formatting, and debugging.', 'tech-tools-hub' ); ?></p>
-					</a>
-				</article>
-
-				<article class="tth-tool-card">
-					<a class="tth-tool-card__link" href="<?php echo esc_url( home_url( '/seo-tools/' ) ); ?>">
-						<span class="tth-tool-card__icon">SEO</span>
-						<h3 class="tth-tool-card__title"><?php esc_html_e( 'SEO Tools', 'tech-tools-hub' ); ?></h3>
-						<p class="tth-tool-card__description"><?php esc_html_e( 'Useful tools for metadata, content checks, and search optimization.', 'tech-tools-hub' ); ?></p>
-					</a>
-				</article>
-
-				<article class="tth-tool-card">
-					<a class="tth-tool-card__link" href="<?php echo esc_url( home_url( '/text-tools/' ) ); ?>">
-						<span class="tth-tool-card__icon">TEXT</span>
-						<h3 class="tth-tool-card__title"><?php esc_html_e( 'Text Tools', 'tech-tools-hub' ); ?></h3>
-						<p class="tth-tool-card__description"><?php esc_html_e( 'Quick text utilities for counting, cleaning, and formatting.', 'tech-tools-hub' ); ?></p>
-					</a>
-				</article>
-			</div>
-		</div>
-	</section>
-
-	<section class="tth-section tth-section-calculators">
-		<div class="inside-article">
-			<h2><?php esc_html_e( 'Featured Calculators', 'tech-tools-hub' ); ?></h2>
-
-			<div class="tth-tool-grid">
-				<?php if ( ! empty( $featured_calculators ) ) : ?>
-					<?php foreach ( $featured_calculators as $tool_page ) : ?>
-						<?php tth_home_render_tool_card( $tool_page, 'CALC', 18 ); ?>
-					<?php endforeach; ?>
-				<?php else : ?>
-					<p><?php esc_html_e( 'No calculator pages found yet. Create pages using the TTH Calculator template.', 'tech-tools-hub' ); ?></p>
-				<?php endif; ?>
+				foreach ( $categories as $category ) :
+					?>
+					<article class="tth-tool-card">
+						<a class="tth-tool-card__link" href="<?php echo esc_url( home_url( $category[3] ) ); ?>">
+							<span class="tth-tool-card__icon"><?php echo esc_html( $category[0] ); ?></span>
+							<h3 class="tth-tool-card__title"><?php echo esc_html( $category[1] ); ?></h3>
+							<p class="tth-tool-card__description"><?php echo esc_html( $category[2] ); ?></p>
+						</a>
+					</article>
+					<?php
+				endforeach;
+				?>
 			</div>
 		</div>
 	</section>
 
 	<section class="tth-section tth-section-tools">
 		<div class="inside-article">
-			<h2><?php esc_html_e( 'Featured Tools', 'tech-tools-hub' ); ?></h2>
+			<h2>Popular Tools</h2>
 
 			<div class="tth-tool-grid">
-				<?php if ( ! empty( $featured_tools ) ) : ?>
-					<?php foreach ( $featured_tools as $tool_page ) : ?>
-						<?php tth_home_render_tool_card( $tool_page, 'TOOL', 18 ); ?>
-					<?php endforeach; ?>
-				<?php else : ?>
-					<p><?php esc_html_e( 'Add a few regular tool pages to highlight them here.', 'tech-tools-hub' ); ?></p>
-				<?php endif; ?>
+				<?php
+				tth_home_render_card_by_slug( 'tools/text-tools/word-counter', 'TEXT' );
+				tth_home_render_card_by_slug( 'tools/dev-tools/json-formatter', 'DEV' );
+				tth_home_render_card_by_slug( 'tools/seo-tools/serp-snippet-preview-tool', 'SEO' );
+				tth_home_render_card_by_slug( 'tools/image-tools/image-aspect-ratio-calculator', 'IMG' );
+				tth_home_render_card_by_slug( 'tools/dev-tools/html-css-javascript-minifier', 'DEV' );
+				tth_home_render_card_by_slug( 'tools/dev-tools/password-generator', 'DEV' );
+				?>
+			</div>
+		</div>
+	</section>
+
+	<section class="tth-section tth-section-tools">
+		<div class="inside-article">
+			<h2>SEO Tools</h2>
+
+			<div class="tth-tool-grid">
+				<?php
+				tth_home_render_card_by_slug( 'tools/seo-tools/serp-snippet-preview-tool', 'SEO' );
+				tth_home_render_card_by_slug( 'tools/seo-tools/meta-tag-generator', 'SEO' );
+				tth_home_render_card_by_slug( 'tools/seo-tools/robots-txt-generator', 'SEO' );
+				?>
+			</div>
+		</div>
+	</section>
+
+	<section class="tth-section tth-section-tools">
+		<div class="inside-article">
+			<h2>Developer Tools</h2>
+
+			<div class="tth-tool-grid">
+				<?php
+				tth_home_render_card_by_slug( 'tools/dev-tools/json-formatter', 'DEV' );
+				tth_home_render_card_by_slug( 'tools/dev-tools/html-css-javascript-minifier', 'DEV' );
+				tth_home_render_card_by_slug( 'tools/dev-tools/base64-encoder', 'DEV' );
+				tth_home_render_card_by_slug( 'tools/dev-tools/password-generator', 'DEV' );
+				?>
+			</div>
+		</div>
+	</section>
+
+	<section class="tth-section tth-section-tools">
+		<div class="inside-article">
+			<h2>Image & Text Tools</h2>
+
+			<div class="tth-tool-grid">
+				<?php
+				tth_home_render_card_by_slug( 'tools/image-tools/image-aspect-ratio-calculator', 'IMG' );
+				tth_home_render_card_by_slug( 'tools/image-tools/image-dimension-checker', 'IMG' );
+				tth_home_render_card_by_slug( 'tools/image-tools/color-contrast-checker', 'IMG' );
+				tth_home_render_card_by_slug( 'tools/text-tools/word-counter', 'TEXT' );
+				tth_home_render_card_by_slug( 'tools/text-tools/reading-time-calculator', 'TEXT' );
+				tth_home_render_card_by_slug( 'tools/text-tools/text-case-converter', 'TEXT' );
+				?>
 			</div>
 		</div>
 	</section>
 
 	<section class="tth-section tth-section-benefits">
 		<div class="inside-article">
-			<h2><?php esc_html_e( 'Why Use Tech Tools Hub?', 'tech-tools-hub' ); ?></h2>
+			<h2>Why Use Tech Tool Hub?</h2>
 
 			<div class="tth-tool-grid">
 				<article class="tth-tool-card">
 					<div class="tth-tool-card__link">
 						<span class="tth-tool-card__icon">FREE</span>
-						<h3 class="tth-tool-card__title"><?php esc_html_e( 'Free to Use', 'tech-tools-hub' ); ?></h3>
-						<p class="tth-tool-card__description"><?php esc_html_e( 'No signup, no paywall, and no unnecessary friction.', 'tech-tools-hub' ); ?></p>
+						<h3 class="tth-tool-card__title">Free to Use</h3>
+						<p class="tth-tool-card__description">No signup, no paywall, and no unnecessary friction.</p>
 					</div>
 				</article>
 
 				<article class="tth-tool-card">
 					<div class="tth-tool-card__link">
 						<span class="tth-tool-card__icon">FAST</span>
-						<h3 class="tth-tool-card__title"><?php esc_html_e( 'Built for Speed', 'tech-tools-hub' ); ?></h3>
-						<p class="tth-tool-card__description"><?php esc_html_e( 'Simple tools designed to load quickly and get to the point.', 'tech-tools-hub' ); ?></p>
+						<h3 class="tth-tool-card__title">Built for Speed</h3>
+						<p class="tth-tool-card__description">Lightweight tools designed to load quickly and get to the point.</p>
 					</div>
 				</article>
 
 				<article class="tth-tool-card">
 					<div class="tth-tool-card__link">
 						<span class="tth-tool-card__icon">EASY</span>
-						<h3 class="tth-tool-card__title"><?php esc_html_e( 'Easy to Use', 'tech-tools-hub' ); ?></h3>
-						<p class="tth-tool-card__description"><?php esc_html_e( 'Clean interfaces without clutter or bloated features.', 'tech-tools-hub' ); ?></p>
+						<h3 class="tth-tool-card__title">Easy to Use</h3>
+						<p class="tth-tool-card__description">Clean interfaces without clutter, accounts, or complicated setup.</p>
 					</div>
 				</article>
 			</div>
 		</div>
 	</section>
 
-	<section class="tth-section tth-section-articles">
-		<div class="inside-article">
-			<h2><?php esc_html_e( 'Latest Articles', 'tech-tools-hub' ); ?></h2>
+	<?php if ( ! empty( $latest_posts ) ) : ?>
+		<section class="tth-section tth-section-articles">
+			<div class="inside-article">
+				<h2>Latest Articles</h2>
 
-			<div class="tth-tool-grid">
-				<?php if ( ! empty( $latest_posts ) ) : ?>
+				<div class="tth-tool-grid">
 					<?php foreach ( $latest_posts as $post ) : ?>
 						<article class="tth-tool-card">
 							<a class="tth-tool-card__link" href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>">
@@ -227,22 +200,18 @@ $latest_posts = get_posts(
 						</article>
 					<?php endforeach; ?>
 					<?php wp_reset_postdata(); ?>
-				<?php else : ?>
-					<p><?php esc_html_e( 'No blog posts published yet.', 'tech-tools-hub' ); ?></p>
-				<?php endif; ?>
+				</div>
 			</div>
-		</div>
-	</section>
+		</section>
+	<?php endif; ?>
 
 	<section class="tth-section tth-section-cta">
 		<div class="inside-article">
-			<h2><?php esc_html_e( 'Start Exploring Free Tools', 'tech-tools-hub' ); ?></h2>
-			<p><?php esc_html_e( 'Browse calculators, utilities, and practical resources built to help you get things done faster.', 'tech-tools-hub' ); ?></p>
+			<h2>Start Exploring Free Tools</h2>
+			<p>Browse simple calculators, utilities, and practical resources built to help you get things done faster.</p>
 
 			<div class="tth-hero__actions">
-				<a class="button" href="<?php echo esc_url( home_url( '/tools/' ) ); ?>">
-					<?php esc_html_e( 'Browse All Tools', 'tech-tools-hub' ); ?>
-				</a>
+				<a class="button" href="<?php echo esc_url( home_url( '/tools/' ) ); ?>">Browse All Tools</a>
 			</div>
 		</div>
 	</section>

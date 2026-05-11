@@ -26,6 +26,7 @@ $tech_tools_hub_includes = array(
 	'inc/enqueue.php',
 	'inc/helpers.php',
 	'inc/shortcodes.php',
+	'inc/header.php'
 );
 
 foreach ( $tech_tools_hub_includes as $include_file ) {
