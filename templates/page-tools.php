@@ -15,12 +15,17 @@ get_header();
 
 <main id="primary" class="site-main tth-page tth-page-tools">
 	<section class="tth-section">
+		<?php if (function_exists("rank_math_the_breadcrumbs")) rank_math_the_breadcrumbs(); ?>
 		<div class="inside-article">
-			<h1><?php the_title(); ?></h1>
 			<?php
 			while ( have_posts() ) :
 				the_post();
-				the_content();
+				?>
+				<h1><?php echo esc_html( get_the_title() ); ?></h1>
+				<div class="tth-page-content">
+					<?php the_content(); ?>
+				</div>
+				<?php
 			endwhile;
 			?>
 		</div>
@@ -33,18 +38,19 @@ get_header();
 				<?php
 				$tool_pages = get_pages(
 					array(
-						'child_of'   => get_the_ID(),
-						'sort_column'=> 'menu_order,post_title',
-						'post_status'=> 'publish',
+						'parent'      => get_the_ID(),
+						'sort_column' => 'menu_order,post_title',
+						'post_status' => 'publish',
 					)
 				);
 
 				if ( ! empty( $tool_pages ) ) :
 					foreach ( $tool_pages as $tool_page ) :
 						set_query_var( 'tth_tool_title', $tool_page->post_title );
-						set_query_var( 'tth_tool_description', tth_get_tool_excerpt( $tool_page, 20 ) );
-						set_query_var( 'tth_tool_url', tth_get_tool_link( $tool_page->ID ) );
+						set_query_var( 'tth_tool_description', function_exists( 'tth_get_tool_excerpt' ) ? tth_get_tool_excerpt( $tool_page, 20 ) : wp_trim_words( wp_strip_all_tags( $tool_page->post_content ), 20 ) );
+						set_query_var( 'tth_tool_url', function_exists( 'tth_get_tool_link' ) ? tth_get_tool_link( $tool_page->ID ) : get_permalink( $tool_page->ID ) );
 						set_query_var( 'tth_tool_icon', 'TOOL' );
+
 						get_template_part( 'template-parts/tool-card' );
 					endforeach;
 				else :

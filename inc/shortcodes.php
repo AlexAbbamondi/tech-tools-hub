@@ -69,3 +69,52 @@ if ( ! function_exists( 'tth_shortcode_calculator' ) ) {
 	}
 }
 add_shortcode( 'tth_calculator', 'tth_shortcode_calculator' );
+
+add_shortcode( 'tool_submission_form', 'tth_tool_submission_form_shortcode' );
+
+function tth_tool_submission_form_shortcode() {
+	ob_start();
+	?>
+
+	<form class="tth-suggest-tool-form" method="post">
+		<div class="tth-calculator__row">
+			<label for="tth-tool-name">Tool Name</label>
+			<input id="tth-tool-name" name="tool_name" type="text" required>
+		</div>
+
+		<div class="tth-calculator__row">
+			<label for="tth-tool-url">Tool URL</label>
+			<input id="tth-tool-url" name="tool_url" type="url" placeholder="https://example.com">
+		</div>
+
+		<div class="tth-calculator__row">
+			<label for="tth-tool-category">Category</label>
+			<select id="tth-tool-category" name="tool_category">
+				<option value="">Select a category</option>
+				<option value="SEO Tools">SEO Tools</option>
+				<option value="Dev Tools">Dev Tools</option>
+				<option value="Image Tools">Image Tools</option>
+				<option value="Text Tools">Text Tools</option>
+				<option value="Productivity Tools">Productivity Tools</option>
+				<option value="Other">Other</option>
+			</select>
+		</div>
+
+		<div class="tth-calculator__row">
+			<label for="tth-tool-description">Why should we add it?</label>
+			<textarea id="tth-tool-description" name="tool_description" rows="6" required></textarea>
+		</div>
+
+		<div class="tth-calculator__row">
+			<label for="tth-your-email">Your Email</label>
+			<input id="tth-your-email" name="your_email" type="email" placeholder="optional@example.com">
+		</div>
+
+		<div class="tth-tool-actions">
+			<button type="submit">Submit Tool Suggestion</button>
+		</div>
+	</form>
+
+	<?php
+	return ob_get_clean();
+}

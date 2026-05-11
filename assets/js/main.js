@@ -61,4 +61,31 @@
 		var calculators = document.querySelectorAll('[data-calculator]');
 		calculators.forEach(initCalculator);
 	});
+
+	const toggle = document.getElementById('tth-theme-toggle');
+
+	if (!toggle) return;
+
+	const icon = toggle.querySelector('.tth-theme-toggle__icon');
+	const text = toggle.querySelector('.tth-theme-toggle__text');
+
+	function applyTheme(theme) {
+		document.documentElement.setAttribute('data-theme', theme);
+		localStorage.setItem('tth-theme', theme);
+
+		if (icon) icon.textContent = theme === 'dark' ? '☀' : '☾';
+		if (text) text.textContent = theme === 'dark' ? 'Light' : 'Dark';
+	}
+
+	const savedTheme = localStorage.getItem('tth-theme');
+	const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+	const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+	applyTheme(initialTheme);
+
+	toggle.addEventListener('click', () => {
+		const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+		applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+	});
+
 })();
