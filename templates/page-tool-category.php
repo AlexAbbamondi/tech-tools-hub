@@ -72,7 +72,7 @@ $tool_pages = get_pages(
 			</p>
 		</div>
 	</section>
-
+<?php get_template_part( 'template-parts/tools-subnav' ); ?>
 	<section class="tth-section">
 		<div class="inside-article">
 			<div class="tth-page-content">
@@ -91,7 +91,6 @@ $tool_pages = get_pages(
 			</div>
 		</div>
 	</section>
-
 	<section class="tth-section">
 		<div class="inside-article">
 			<h2><?php esc_html_e( 'Available Tools', 'tech-tools-hub' ); ?></h2>

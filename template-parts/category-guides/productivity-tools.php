@@ -1,10 +1,3 @@
-
-<nav class="tth-tools-subnav" aria-label="Tool navigation">
-	<ul class="tth-tools-subnav__list">
-		<li><a href="/tools/productivity-tools/password-generator/">Password Generator</a></li>
-		<li><a href="/tools/productivity-tools/pomodoro-timer/">Pomodoro Timer</a></li>
-	</ul>
-</nav>
 <section class="tth-category-guide">
     
 	<div class="tth-category-guide__intro">
@@ -108,33 +101,33 @@
 	<div class="tth-category-guide__faq">
 		<h2>Frequently Asked Questions</h2>
 
-		<div class="tth-category-guide__faq-item">
-			<h3>What are productivity tools?</h3>
+		<details class="tth-category-guide__faq-item">
+			<summary>What are productivity tools?</summary>
 			<p>
 				Productivity tools are applications or utilities designed to help users complete tasks more efficiently,
 				stay organized, and improve focus.
 			</p>
-		</div>
+		</details>
 
-		<div class="tth-category-guide__faq-item">
-			<h3>Are these productivity tools free?</h3>
+		<details class="tth-category-guide__faq-item">
+			<summary>Are these productivity tools free?</summary>
 			<p>
 				Yes. All productivity tools on Tech Tool Hub are free to use directly in your browser.
 			</p>
-		</div>
+		</details>
 
-		<div class="tth-category-guide__faq-item">
-			<h3>Do I need to create an account?</h3>
+		<details class="tth-category-guide__faq-item">
+			<summary>Do I need to create an account?</summary>
 			<p>
 				No signup or account is required to use the tools.
 			</p>
-		</div>
+		</details>
 
-		<div class="tth-category-guide__faq-item">
-			<h3>Can I use these tools on mobile devices?</h3>
+		<details class="tth-category-guide__faq-item">
+			<summary>Can I use these tools on mobile devices?</summary>
 			<p>
 				Yes. The tools are designed to work on desktop, tablet, and mobile devices.
 			</p>
-		</div>
+		</details>
 	</div>
 </section>

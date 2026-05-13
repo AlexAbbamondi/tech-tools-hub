@@ -1,11 +1,3 @@
-
-<nav class="tth-tools-subnav" aria-label="Tool navigation">
-	<ul class="tth-tools-subnav__list">
-		<li><a href="/tools/text-tools/reading-time-calculator/">Reading Time Calculator</a></li>
-		<li><a href="/tools/text-tools/text-case-converter/">Text Case Converter</a></li>
-		<li><a href="/tools/text-tools/word-counter/">Word Counter</a></li>
-	</ul>
-</nav>
 <section class="tth-guide-section">
 	<h2>Text Tools Guide</h2>
 	<p>Text tools help writers, marketers, developers, and editors clean up content, count words, estimate reading time, and format text quickly.</p>

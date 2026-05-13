@@ -1,11 +1,3 @@
-
-<nav class="tth-tools-subnav" aria-label="Tool navigation">
-	<ul class="tth-tools-subnav__list">
-		<li><a href="/tools/seo-tools/meta-tag-generator/">Meta Tag Generator</a></li>
-		<li><a href="/tools/seo-tools/robots-txt-generator/">Robots.txt Generator</a></li>
-		<li><a href="/tools/seo-tools/serp-snippet-preview-tool/">SERP Snippet Preview Tool</a></li>
-	</ul>
-</nav>
 <section class="tth-guide-section">
 	<h2>SEO Tools Guide</h2>
 	<p>SEO tools help improve how pages appear in search results, how well search engines understand your content, and how easily users can find important information on your site.</p>

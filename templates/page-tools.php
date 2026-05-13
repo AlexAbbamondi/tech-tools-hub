@@ -14,7 +14,7 @@ get_header();
 ?>
 
 <main id="primary" class="site-main tth-page tth-page-tools">
-	<section class="tth-section">
+	<section class="tth-section tth-hero">
 		<?php if (function_exists("rank_math_the_breadcrumbs")) rank_math_the_breadcrumbs(); ?>
 		<div class="inside-article">
 			<?php

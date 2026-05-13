@@ -1,12 +1,3 @@
-
-<nav class="tth-tools-subnav" aria-label="Tool navigation">
-	<ul class="tth-tools-subnav__list">
-		<li><a href="/tools/image-tools/color-contrast-checker/">Color Contrast Checker</a></li>
-		<li><a href="/tools/image-tools/image-aspect-ratio-calculator/">Image Aspect Ratio Calculator</a></li>
-		<li><a href="/tools/image-tools/image-dimension-checker/">Image Dimension Checker</a></li>
-	</ul>
-</nav>
-
 <div class="tth-tool tth-image-size-guide">
 	<section class="tth-tool-results">
 		<h2>Image Size Guide & Cheat Sheet</h2>

@@ -1,12 +1,3 @@
-
-<nav class="tth-tools-subnav" aria-label="Tool navigation">
-	<ul class="tth-tools-subnav__list">
-		<li><a href="/tools/dev-tools/json-formatter/">JSON Formatter</a></li>
-		<li><a href="/tools/dev-tools/html-css-javascript-minifier/">Code Minifier</a></li>
-		<li><a href="/tools/dev-tools/base64-encoder/">Base64 Encoder</a></li>
-		<li><a href="/tools/dev-tools/password-generator/">Password Generator</a></li>
-	</ul>
-</nav>
 <section class="tth-guide-section">
 	<h2>Developer Tools Guide</h2>
 	<p>Developer tools make common coding tasks faster, including formatting, minifying, encoding, decoding, validating, and converting data.</p>
